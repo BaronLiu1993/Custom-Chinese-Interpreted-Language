@@ -14,6 +14,7 @@ export enum TokenType {
     While,
     If,
     Else,
+    EOF
 }
 
 export interface Token {
@@ -39,7 +40,7 @@ export function tokenize(sourceCode: string): Token[] {
             tokens.push(token(src.shift()!, TokenType.CurlyOpenParen));
         } else if (current === "}") {
             tokens.push(token(src.shift()!, TokenType.CurlyClosedParen));
-        } else if ("+-*/".includes(current)) {
+        } else if ("+-*/%".includes(current)) {
             tokens.push(token(src.shift()!, TokenType.BinaryOperator));
         } else if (current === "=") {
             tokens.push(token(src.shift()!, TokenType.Equals));
@@ -76,6 +77,7 @@ export function tokenize(sourceCode: string): Token[] {
         }
     }
 
+    tokens.push({value: "EndOfFile", type: TokenType.EOF,});
     return tokens;
 }
 
