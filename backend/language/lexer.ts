@@ -1,8 +1,8 @@
 export enum TokenType {
-    Null,
     Number,
     Identifier,
     Equals,
+    String,
     OpenParen,
     ClosedParen,
     CurlyOpenParen,
@@ -68,8 +68,6 @@ export function tokenize(sourceCode: string): Token[] {
                 tokens.push(token(chineseWord, TokenType.While));
             } else if (chineseWord == "为") {
                 tokens.push(token(chineseWord, TokenType.For));
-            } else if (chineseWord == "无") {
-                tokens.push(token(chineseWord, TokenType.Null))
             } else {
                 tokens.push(token(chineseWord, TokenType.Identifier));
             }

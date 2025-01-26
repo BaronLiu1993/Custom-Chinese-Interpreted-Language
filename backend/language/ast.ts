@@ -5,7 +5,6 @@ export type NodeType =
     | "BinaryExpression" 
     | "CallExpression" 
     | "UnaryExpression" 
-    | "NullLiteral"
     | "FunctionDecalaration" ;
 
 export interface Statement {
@@ -38,9 +37,5 @@ export interface NumericLiteral extends Expression {
     value: number;
 }
 
-export interface NullLiteral extends Expression {
-    kind: "NullLiteral",
-    value: "null"
-}
 
 
