@@ -1,5 +1,5 @@
 import { ValueType, RuntimeValue, NumberVal, NullVal, MK_NULL } from "./values.ts"
-import { NodeType, Statement, Expression, Program, NumericLiteral, BinaryExpression, Identifier } from "../language/ast.ts"
+import { NodeType, Statement, Expression, Program, NumericLiteral, NullLiteral, BinaryExpression, Identifier } from "../language/ast.ts"
 import Environment from "./environment.ts";
 
 function evaluate_program (program: Program, env: Environment): RuntimeValue {
@@ -50,6 +50,8 @@ export function evaluate (astNode: Statement, env: Environment): RuntimeValue {
     switch (astNode.kind) {
         case "NumericLiteral":
             return { value: ((astNode as NumericLiteral).value), type: "number" } as NumberVal;
+        case "NullLiteral":
+            return MK_NULL();
         case "Program":
             return evaluate_program(astNode as Program, env as Environment)
         case "Identifier":

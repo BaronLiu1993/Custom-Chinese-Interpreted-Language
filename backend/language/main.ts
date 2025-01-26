@@ -1,14 +1,16 @@
 import Parser from "./parser.ts"
 import { evaluate } from "../runtime/interpreter.ts";
 import Environment from "../runtime/environment.ts";
-import { NumberVal } from "../runtime/values.ts";
+import { MK_BOOL, MK_NUMBER, NumberVal } from "../runtime/values.ts";
 
 repl();
 
-async function repl () {
+function repl () {
     const parser = new Parser()
     const env = new Environment()
-    env.declareVariable("轩", {value: 100, type: "number"} as NumberVal);
+    env.declareVariable("轩", MK_NUMBER(100));
+    env.declareVariable("真", MK_BOOL(true));
+    env.declareVariable("假", MK_BOOL(false))
     console.log("Repl v0.1")
     while (true) {
         const input = prompt(">")
