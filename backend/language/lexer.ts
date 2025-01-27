@@ -9,12 +9,14 @@ export enum TokenType {
     CurlyClosedParen,
     BinaryOperator,
     Let,
+    Const,
     Func,
     Return,
     For,
     While,
     If,
     Else,
+    SemiColon,
     EOF
 }
 
@@ -45,7 +47,9 @@ export function tokenize(sourceCode: string): Token[] {
             tokens.push(token(src.shift()!, TokenType.BinaryOperator));
         } else if (current === "=") {
             tokens.push(token(src.shift()!, TokenType.Equals));
-        } else if (/[0-9]/.test(current)) {
+        } else if (current === "；") {
+            tokens.push(token(src.shift()!, TokenType.SemiColon));
+        }else if (/[0-9]/.test(current)) {
             let num = "";
             while (/[0-9]/.test(src[0])) {
                 num += src.shift();
@@ -70,6 +74,8 @@ export function tokenize(sourceCode: string): Token[] {
                 tokens.push(token(chineseWord, TokenType.For));
             } else if (chineseWord == "无") {
                 tokens.push(token(chineseWord, TokenType.Null))
+            } else if (chineseWord == "常量") {
+                tokens.push(token(chineseWord, TokenType.Const))
             } else {
                 tokens.push(token(chineseWord, TokenType.Identifier));
             }

@@ -5,7 +5,9 @@ export type NodeType =
     | "BinaryExpression" 
     | "CallExpression" 
     | "UnaryExpression" 
+    | "VariableDeclaration"
     | "NullLiteral"
+    | "ForStatement"
     | "FunctionDecalaration" ;
 
 export interface Statement {
@@ -14,6 +16,20 @@ export interface Statement {
 
 export interface Program extends Statement {
     kind: "Program",
+    body: Statement[];
+}
+
+export interface VariableDeclaration extends Statement {
+    kind: "VariableDeclaration",
+    constant: boolean,
+    identifier: string,
+    value?: Expression;
+}
+
+export interface ForStatement extends Statement {
+    kind: "ForStatement";
+    identifier: Identifier;
+    iterable: Expression;
     body: Statement[];
 }
 
@@ -42,5 +58,6 @@ export interface NullLiteral extends Expression {
     kind: "NullLiteral",
     value: "null"
 }
+
 
 

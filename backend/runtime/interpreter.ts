@@ -1,5 +1,5 @@
 import { ValueType, RuntimeValue, NumberVal, NullVal, MK_NULL } from "./values.ts"
-import { NodeType, Statement, Expression, Program, NumericLiteral, NullLiteral, BinaryExpression, Identifier } from "../language/ast.ts"
+import { NodeType, Statement, Expression, Program, NumericLiteral, NullLiteral, BinaryExpression, Identifier, VariableDeclaration } from "../language/ast.ts"
 import Environment from "./environment.ts";
 
 function evaluate_program (program: Program, env: Environment): RuntimeValue {
@@ -9,6 +9,7 @@ function evaluate_program (program: Program, env: Environment): RuntimeValue {
     }
     return lastEvaluated
 }
+
 
 function evaluate_numeric_binary_expression (leftHand: NumberVal, rightHand: NumberVal, operator: string ): NumberVal {
     let numResult: number = 0;
@@ -46,6 +47,11 @@ function evaluate_binary_expression (binop: BinaryExpression, env: Environment):
     return MK_NULL();
 }
 
+function evaluate_var_declaration (declaration: VariableDeclaration, env: Environment): RuntimeValue {
+    const value = declaration.value ? evaluate(declaration.value, env): MK_NULL();
+    return env.declareVariable(declaration.identifier, value, declaration.constant);
+}
+
 export function evaluate (astNode: Statement, env: Environment): RuntimeValue {
     switch (astNode.kind) {
         case "NumericLiteral":
@@ -58,6 +64,8 @@ export function evaluate (astNode: Statement, env: Environment): RuntimeValue {
             return eval_identifier(astNode as Identifier, env as Environment)
         case "BinaryExpression":
             return evaluate_binary_expression(astNode as BinaryExpression, env as Environment)
+        case "VariableDeclaration":
+            return evaluate_var_declaration(astNode as VariableDeclaration, env as Environment)
         default:
             console.error("This AST Node is Not Here", astNode)
             Deno.exit(0)

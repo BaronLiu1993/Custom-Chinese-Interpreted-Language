@@ -1,4 +1,4 @@
-import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, NullLiteral } from "./ast.ts";
+import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, NullLiteral, VariableDeclaration } from "./ast.ts";
 import { tokenize, Token, TokenType } from "./lexer.ts";
 
 export default class Parser {
@@ -41,7 +41,40 @@ export default class Parser {
     }
 
     private parse_statement(): Statement {
-        return this.parse_expression();
+        switch (this.at().type) {
+            case TokenType.Let:
+                return this.parse_var_declaration();
+            case TokenType.Const:
+                return this.parse_var_declaration();
+            default: 
+                return this.parse_expression();
+        } 
+    }
+
+    
+    ///private parse_for_declaration(): Statement {
+    ///    const isFor = this.eat().type == TokenType.For
+    ///    const identifier = this.expect(TokenType.Identifier, "Expected identifier name following FOR keyword");
+    ///}
+    
+    private parse_var_declaration(): Statement {
+        const isConstant = this.eat().type == TokenType.Const;
+        const identifier = this.expect(TokenType.Identifier, "Expected identifier name following FOR keyword").value;
+
+        if (this.at().type == TokenType.SemiColon) {
+            this.eat();
+            if (isConstant) {
+                throw "Must assign value to constant expression. No value provided";
+            }
+
+            return { kind: "VariableDeclaration", value: this.parse_expression(), identifier, constant: false } as VariableDeclaration;
+        }
+
+        this.expect(TokenType.Equals, "Expected Equals token following the identifier in variable declaration")
+        const declaration = { kind: "VariableDeclaration", value: this.parse_expression(), identifier, constant: isConstant } as  VariableDeclaration
+
+        this.expect(TokenType.SemiColon, "Variable declaration must have semicolon")
+        return declaration
     }
 
     private parse_expression(): Expression {
