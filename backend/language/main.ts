@@ -8,9 +8,9 @@ repl();
 function repl () {
     const parser = new Parser()
     const env = new Environment()
-    env.declareVariable("轩", MK_NUMBER(100), false);
-    env.declareVariable("真", MK_BOOL(true), false);
-    env.declareVariable("假", MK_BOOL(false), false)
+    env.declareVariable("轩", MK_NUMBER(100), true);
+    env.declareVariable("真", MK_BOOL(true), true);
+    env.declareVariable("假", MK_BOOL(false), true);
     console.log("Repl v0.1")
     while (true) {
         const input = prompt(">")

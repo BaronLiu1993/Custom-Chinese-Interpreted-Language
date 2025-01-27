@@ -4,6 +4,7 @@ export type NodeType =
     | "Identifier" 
     | "BinaryExpression" 
     | "CallExpression" 
+    | "AssignmentExpression"
     | "UnaryExpression" 
     | "VariableDeclaration"
     | "NullLiteral"
@@ -36,6 +37,13 @@ export interface ForStatement extends Statement {
 export interface Expression extends Statement {
 
 }
+
+export interface AssignmentExpression extends Expression {
+    kind: "AssignmentExpression",
+    assignee: Expression,
+    value: Expression;
+}
+
 
 export interface BinaryExpression extends Expression {
     kind: "BinaryExpression",

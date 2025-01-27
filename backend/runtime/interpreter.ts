@@ -10,7 +10,6 @@ function evaluate_program (program: Program, env: Environment): RuntimeValue {
     return lastEvaluated
 }
 
-
 function evaluate_numeric_binary_expression (leftHand: NumberVal, rightHand: NumberVal, operator: string ): NumberVal {
     let numResult: number = 0;
     if (operator == "+") {

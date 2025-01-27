@@ -1,4 +1,4 @@
-import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, NullLiteral, VariableDeclaration } from "./ast.ts";
+import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, NullLiteral, VariableDeclaration, AssignmentExpression } from "./ast.ts";
 import { tokenize, Token, TokenType } from "./lexer.ts";
 
 export default class Parser {
@@ -77,8 +77,20 @@ export default class Parser {
         return declaration
     }
 
+    
+
     private parse_expression(): Expression {
-        return this.parse_additive_expression();
+        const left = this.parse_additive_expression()
+        
+        if (this.at().type == TokenType.Equals) {
+            this.eat();
+            const value = this.parse_assignment_expression()
+            return { value, assignee: left, kind: "AssignmentExpression"} as AssignmentExpression;
+        }
+    }
+
+    private parse_assignment_expression(): Expression {
+        throw new Error("DNE")
     }
 
     private parse_additive_expression(): Expression {
